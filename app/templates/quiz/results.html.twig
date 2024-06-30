@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Quiz Results</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text><text y=%221.3em%22 x=%220.2em%22 font-size=%2276%22 fill=%22%23fff%22>sf</text></svg>">
+
+    <style>
+        .correct {
+            background-color: #d4edda;
+        }
+        .incorrect {
+            background-color: #f8d7da;
+        }
+        .btn-primary {
+            display: inline-block;
+            padding: 10px 20px;
+            font-size: 18px;
+            font-weight: bold;
+            color: #fff;
+            background-color: #007bff;
+            border: none;
+            border-radius: 5px;
+            text-decoration: none;
+            text-align: center;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .btn-primary:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+
+<a href="{{ path('quiz.index') }}" class="btn btn-primary" style="margin-bottom: 20px">Пройти ещё раз</a>
+
+{% for question in questions %}
+    <fieldset style="margin-bottom: 20px">
+        <legend>Вопрос: {{ question.text }}</legend>
+        {% set userAnswer = results[question.id] is defined ? results[question.id] : null %}
+        {% for answer in question.answers %}
+            {% set isCorrect = userAnswer is not null and answer.id in userAnswer.correctAnswers %}
+            {% set isChecked = userAnswer is not null and answer.id in userAnswer.userAnswers %}
+            <div class="{{ isChecked ? (isCorrect ? 'correct' : 'incorrect') : '' }}">
+                <input type="checkbox" id="question_{{ loop.parent.loop.index }}_answer_{{ loop.index }}" name="answers[{{ question.id }}][]" value="{{ answer.id }}" disabled {{ isChecked ? 'checked' : '' }}>
+                <label for="question_{{ loop.parent.loop.index }}_answer_{{ loop.index }}">{{ answer.text }}</label>
+            </div>
+        {% endfor %}
+    </fieldset>
+{% endfor %}
+
+</body>
+</html>
