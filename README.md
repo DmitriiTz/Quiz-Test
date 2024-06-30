@@ -6,5 +6,15 @@
 ```
 docker-compose up -d
 ```
-
-
+3. Установить зависимости
+```
+docker-compose exec php-fpm composer install
+```
+4. Создать таблицы в базе данных
+```
+docker-compose exec php-fpm php bin/console doctrine:migrations:migrate --no-interaction
+```
+5. Импортировать вопросы в базу данных
+```
+docker-compose exec php-fpm php bin/console app:load-quiz-data
+```
