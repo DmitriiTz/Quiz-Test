@@ -15,6 +15,3 @@ data/
 
 # Ignore dossier logs/
 logs/
-
-# Ignore environment configuration file
-.env
